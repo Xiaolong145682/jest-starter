@@ -18,3 +18,29 @@ import "jest-location-mock";
 //   },
 //   configurable: true
 // })
+
+// NOTE: mock Logger
+
+// jest.spyOn(console, 'log').mockReturnValue();
+// jest.spyOn(console, 'info').mockReturnValue();
+// jest.spyOn(console, 'warn').mockReturnValue();
+// jest.spyOn(console, 'error').mockReturnValue();
+
+import mockConsole from 'jest-mock-console'
+
+mockConsole()
+
+// 详情：https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
